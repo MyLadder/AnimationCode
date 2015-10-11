@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         val icon: ImageView = fv(R.id.icon)
         icon.anim(5000)
         //icon.animTranslationX(0f, 200f)
-        icon.animRotation()
+        icon.anim01(100.0, 200f)
 
         val fab:FloatingActionButton = fv(R.id.fab)
         fab.setOnClickListener(object : View.OnClickListener {
