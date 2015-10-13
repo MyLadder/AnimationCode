@@ -1,12 +1,12 @@
 package tokyo.tommy_kw.viewanimator
 
-import android.animation.Animator
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
+import android.animation.*
 import android.app.Activity
+import android.graphics.Color
 import android.util.Log
 import android.view.View
+import android.view.animation.BounceInterpolator
+import android.widget.Button
 import android.widget.ImageView
 import java.util.*
 
@@ -58,3 +58,26 @@ fun ImageView.anim02(degree:Double, distance:Float, duration: Long = DURATION) {
         animSet.playSequentially(animList)
         animSet.start()
 }
+
+fun Button.animChangingTextColor(fromColor:Int, toColor:Int, duration:Long = DURATION) {
+        val anim = ObjectAnimator.ofInt(this, "textColor", fromColor, toColor)
+        anim.setDuration(duration)
+        anim.setEvaluator(ArgbEvaluator())
+        anim.setRepeatCount(ValueAnimator.INFINITE)
+        anim.setRepeatMode(ValueAnimator.REVERSE)
+        anim.start()
+}
+
+fun Button.animTranslation(from:Float, to:Float, repeatCount:Int, duration:Long = DURATION) {
+        val anim = ObjectAnimator.ofFloat(this, "x", from, to)
+        anim.setDuration(duration)
+        anim.setRepeatCount(repeatCount)
+        anim.setInterpolator(BounceInterpolator())
+        anim.addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                        this@animTranslation.visibility = View.GONE
+                }
+        })
+        anim.start()
+}
+
