@@ -10,6 +10,7 @@ import android.view.View
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
+import android.widget.Toolbar
 import tokyo.tommy_kw.viewanimator.fv
 
 class MainActivity : AppCompatActivity() {
