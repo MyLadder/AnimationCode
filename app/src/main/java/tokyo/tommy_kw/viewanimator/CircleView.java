@@ -5,7 +5,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
+import android.util.Property;
 import android.view.View;
 
 /**
@@ -31,17 +34,49 @@ public class CircleView extends View {
 
     public CircleView(Context context) {
         super(context);
+        init();
     }
 
     public CircleView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     public CircleView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
     }
 
-    public CircleView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
+    private void init() {
+        circlePaint.setStyle(Paint.Style.FILL);
+        maskPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
     }
+
+    public void setSize(int width, int height) {
+        this.width = width;
+        this.height = height;
+        invalidate();
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        if (width != 0 && height != 0) {
+            setMeasureDimension(width, height);
+        }
+    }
+
+    public static final Property<CircleView, Float> INNER_CIRCLE_RADIUS_PROGRESS =
+            new Property<CircleView, Float>() {
+                @Override
+                public Float get(CircleView object) {
+                    return null;
+                }
+
+                @Override
+                public void set(CircleView object, Float value) {
+                    //
+                }
+            }
+
 }
