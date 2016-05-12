@@ -1,12 +1,14 @@
 package tokyo.tommy_kw.viewanimator;
 
 import android.animation.ArgbEvaluator;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Property;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.view.View;
 /**
  * Created by tommy on 2016/05/09.
  */
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class CircleView extends View {
     private static int START_COLOR = 0xFFFF1000;
     private static int END_COLOR = 0xFFFF2000;
@@ -64,6 +67,23 @@ public class CircleView extends View {
         if (width != 0 && height != 0) {
             setMeasureDimension(width, height);
         }
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        maxCircleSize = w / 2;
+        tmpBitmap = Bitmap.createBitmap(getWidth(), getWidth(), Bitmap.Config.ARGB_8888);
+        tmpCanvas = new Canvas(tmpBitmap);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        tmpCanvas.drawColor(0xffffff, PorterDuff.Mode.CLEAR);
+        tmpCanvas.drawCircle(getWidth() / 2, getHeight() / 2, outerCircleRadiusProgress * maxCircleSize, circlePaint);
+        tmpCanvas.drawCircle(getWidth() / 2, getHeight() / 2, innerCircleRadiusProgress * maxCircleSize, maskPaint);
+        canvas.drawBitmap(tmpBitmap, 0, 0, null);
     }
 
     public static final Property<CircleView, Float> INNER_CIRCLE_RADIUS_PROGRESS =
