@@ -86,17 +86,46 @@ public class CircleView extends View {
         canvas.drawBitmap(tmpBitmap, 0, 0, null);
     }
 
+    public void setInnerCircleRadiusProgress(float innerCircleRadiusProgress) {
+        this.innerCircleRadiusProgress = innerCircleRadiusProgress;
+        postInvalidate();
+    }
+
+    public float getInnerCircleRadiusProgress() {
+        return innerCircleRadiusProgress;
+    }
+
+    public void setOuterCircleRadiusProgress(float outerCircleRadiusProgress) {
+        this.outerCircleRadiusProgress = outerCircleRadiusProgress;
+        updateCircleColor();
+        postInvalidate();
+    }
+
+    public float getOuterCircleRadiusProgress() {
+        return outerCircleRadiusProgress;
+    }
+
     public static final Property<CircleView, Float> INNER_CIRCLE_RADIUS_PROGRESS =
-            new Property<CircleView, Float>() {
+            new Property<CircleView, Float>(Float.class, "outerCircleRadiusProgress") {
                 @Override
                 public Float get(CircleView object) {
-                    return null;
+                    return object.getOuterCircleRadiusProgress();
                 }
 
                 @Override
                 public void set(CircleView object, Float value) {
-                    //
+                    object.setOuterCircleRadiusProgress(value);
                 }
-            }
+            };
+
+    public void setStartColor(@ColorInt int color) {
+        START_COLOR = color;
+        invalidate();
+    }
+
+    public void setEndColor(@ColorInt int color) {
+        END_COLOR = color;
+        invalidate();
+    }
 
 }
