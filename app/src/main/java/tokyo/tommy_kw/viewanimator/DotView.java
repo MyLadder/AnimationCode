@@ -80,9 +80,31 @@ public class DotView extends View {
     }
 
     private void drawOuterDotFrame(Canvas canvas) {
+        for (int i = 0; i < DOT_COUNT; i++) {
+            int cx = (int) (centerX + currentRadius1 * Math.cos(i * OUTER_DOT_POSITION_ANGLE * Math.PI / 180));
+            int cy = (int) (centerY + currentRadius1 * Math.sin(i * OUTER_DOT_POSITION_ANGLE * Math.PI / 180));
+            canvas.drawCircle(cx, cy, currentDotSize1, circlePaints[(i + 1) % circlePaints.length]);
+        }
     }
 
     private void drawInnerDotFrame(Canvas canvas) {
+        for (int i = 0; i < DOT_COUNT; i++) {
+            int cx = (int) (centerX + currentRadius2 * Math.cos((i * OUTER_DOT_POSITION_ANGLE - 10) * Math.PI / 180));
+            int cy = (int) (centerY + currentRadius2 * Math.sin((i * OUTER_DOT_POSITION_ANGLE - 10) * Math.PI / 180));
+            canvas.drawCircle(cx, cy, currentDotSize2, circlePaints[(i + 1) % circlePaints.length]);
+        }
+    }
 
+    public void setCurrentProgress(float currentProgress) {
+        this.currentProgress = currentProgress;
+        updateInnerDotPosition();
+        updateOuterDotPosition();
+        updateDotPaints();
+        updateDotAlpha();
+        postInvalidate();
+    }
+
+    public float getCurrentProgress() {
+        return currentProgress;
     }
 }
