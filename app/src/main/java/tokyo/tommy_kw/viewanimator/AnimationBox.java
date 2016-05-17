@@ -1,6 +1,7 @@
 package tokyo.tommy_kw.viewanimator;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -52,5 +53,21 @@ public class AnimationBox extends View {
 
     public AnimationBox(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    private void repare(AttributeSet attrs) {
+        if (attrs == null) {
+            strokeWidth = dipToInt(strokeWidth)
+        } else {
+            TypedArray ta = getContext().obtainStyledAttributes(attrs, R.styleable.AnimationBox);
+            strokeWidth = (int)ta.getDimension(R.styleable.AnimationBox_stroke_width, dipToInt(strokeWidth));
+            strokeColor = ta.getColor(R.styleable.AnimationBox_stroke_color, strokeColor);
+            circleColor = ta.getColor(R.styleable.AnimationBox_circle_color, circleColor);
+            ta.recycle();
+        }
+    }
+
+    private int dipToInt(int dip) {
+        return (int)getContext().getResources().getDisplayMetrics().density * dip;
     }
 }
