@@ -1,14 +1,17 @@
 package tokyo.tommy_kw.viewanimator;
 
 import android.animation.ValueAnimator;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.CompoundButton;
 
 /**
@@ -102,8 +105,31 @@ public class AnimationBox extends View {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void startCheckedAnim() {
         ValueAnimator animator = new ValueAnimator();
+        final float hookMaxValue = hookSize - endLeftHookOffset - baseLeftHookOffset;
+        final float circleMinFraction = (endLeftHookOffset - baseLeftHookOffset) / hookMaxValue;
+        final float circleMaxValue = 360 / (1 - circleMinFraction);
+        animator.setFloatValues(0, 1);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float circleFraction = animation.getAnimatedFraction();
+                float fraction = 1 - circleFraction;
+                hookOffset = fraction * hookMaxValue;
+                if (circleFraction >= circleMinFraction) {
+                    sweepAngle = (int) ((circleFraction - circleMinFraction) * circleMaxValue);
+                } else {
+                    sweepAngle = 0;
+                }
+                innerCircleAlpha = (int)(fraction * 0xFF);
+                invalidate();
+            }
+        });
+        animator.setInterpolator(new AccelerateDecelerateInterpolator());
+        animator.setDuration(duration).start();
     }
 
     private void startUnCheckedAnim() {
