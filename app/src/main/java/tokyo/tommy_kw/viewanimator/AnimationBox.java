@@ -1,5 +1,6 @@
 package tokyo.tommy_kw.viewanimator;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -57,7 +58,7 @@ public class AnimationBox extends View {
 
     private void repare(AttributeSet attrs) {
         if (attrs == null) {
-            strokeWidth = dipToInt(strokeWidth)
+            strokeWidth = dipToInt(strokeWidth);
         } else {
             TypedArray ta = getContext().obtainStyledAttributes(attrs, R.styleable.AnimationBox);
             strokeWidth = (int)ta.getDimension(R.styleable.AnimationBox_stroke_width, dipToInt(strokeWidth));
@@ -65,6 +66,47 @@ public class AnimationBox extends View {
             circleColor = ta.getColor(R.styleable.AnimationBox_circle_color, circleColor);
             ta.recycle();
         }
+
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(strokeWidth);
+        paint.setColor(strokeColor);
+        setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setChecked(!checked);
+            }
+        });
+    }
+
+    public void setChecked(boolean chk) {
+        setChecked(chk, true);
+    }
+
+    public void setChecked(boolean chk, boolean animation) {
+        if (chk == checked) {
+            return;
+        }
+
+        checked = chk;
+        if (animation) {
+            startAnim();
+        }
+    }
+
+    private void startAnim() {
+        clearAnimation();
+        if (checked) {
+            startCheckedAnim();
+        } else {
+            startUnCheckedAnim();
+        }
+    }
+
+    private void startCheckedAnim() {
+        ValueAnimator animator = new ValueAnimator();
+    }
+
+    private void startUnCheckedAnim() {
     }
 
     private int dipToInt(int dip) {
