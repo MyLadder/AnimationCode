@@ -105,6 +105,12 @@ public class AnimationBox extends View {
         }
     }
 
+    private int getAlphaColor(int color, int alpha) {
+        alpha = alpha < 0 ? 0 : alpha;
+        alpha = alpha > 255 ? 255 : alpha;
+        return (color & 0x00FFFFFF) | alpha << 24;
+    }
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void startCheckedAnim() {
         ValueAnimator animator = new ValueAnimator();
