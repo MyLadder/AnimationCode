@@ -111,6 +111,39 @@ public class AnimationBox extends View {
         return (color & 0x00FFFFFF) | alpha << 24;
     }
 
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        setChecked(checked, true);
+    }
+
+    public void setChecked(boolean chk, boolean animation) {
+        if (chk == checked) {
+            return;
+        }
+
+        checked = chk;
+        if (animation) {
+            startAnim();
+        } else {
+            if (checked) {
+                innerCircleAlpha = 0xFF;
+                sweepAngle = 0;
+                hookOffset = hookSize + endLeftHookOffset - baseLeftHookOffset;
+            } else {
+                innerCircleAlpha = 0x00;
+                sweepAngle = 360;
+                hookOffset = 0;
+            }
+            invalidate();
+        }
+        if (onCheckedChangeListener != null) {
+            onCheckedChangeListener.onCheckedChanged(checked);
+        }
+    }
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void startCheckedAnim() {
         ValueAnimator animator = new ValueAnimator();
