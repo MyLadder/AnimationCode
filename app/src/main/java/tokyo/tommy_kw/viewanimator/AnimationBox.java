@@ -9,6 +9,8 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.os.Build;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -177,4 +179,23 @@ public class AnimationBox extends View {
     private int dipToInt(int dip) {
         return (int)getContext().getResources().getDisplayMetrics().density * dip;
     }
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        return super.onSaveInstanceState();
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        super.onRestoreInstanceState(state);
+    }
+
+    public void setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener listener) {
+        this.onCheckedChangeListener = listener;
+    }
+
+    public interface OnCheckedChangeListener {
+        void onChange(boolean checked);
+    }
+
 }
